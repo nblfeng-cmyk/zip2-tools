@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+venv/
+.env
+
+# Build artifacts
+build/
+dist/
+*.spec
+
+# Model weights (too large, download separately)
+models/*.pt
+models/*.ckpt
+fonts/
+
+# IDE / local
+.codegraph/
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+Thumbs.db
+.DS_Store
