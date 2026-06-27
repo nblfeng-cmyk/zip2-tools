@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装构建依赖
+        run: |
+          pip install pillow pyinstaller
+
+      - name: 构建 zip2webp.exe
+        run: |
+          pyinstaller zip2webp_gui.py `
+            --onefile --windowed `
+            --name=zip2webp `
+            --hidden-import=PIL `
+            --hidden-import=PIL._webp `
+            --hidden-import=multiprocessing `
+            --collect-submodules=concurrent `
+            --icon=app.ico `
+            --clean --noconfirm
+
+      - name: 构建 zip_image_filter.exe
+        run: |
+          pyinstaller zip_image_filter.py `
+            --onefile --windowed `
+            --name=zip_image_filter `
+            --hidden-import=multiprocessing `
+            --icon=app.ico `
+            --clean --noconfirm
+
+      - name: 创建 Release 并上传附件
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ZIP & WebP 工具集 ${{ github.ref_name }}
+          body: |
+            ## ZIP & WebP 工具集 ${{ github.ref_name }}
+
+            ### 包含工具
+            - **zip2webp.exe** — ZIP 内图片批量转为 WebP
+            - **zip_image_filter.exe** — 按图片数量/大小筛选 ZIP
+
+            ### 使用说明
+            下载 .exe 后直接双击运行，无需安装 Python。
+          files: |
+            dist/zip2webp.exe
+            dist/zip_image_filter.exe
+          draft: false
+          prerelease: false
