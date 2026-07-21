@@ -497,6 +497,9 @@ class Zip2WebpApp:
                     for i, fp in enumerate(webp_files, 1):
                         new_name = f"{i:03d}.webp"
                         new_path = tmp / new_name
+                        # 如果已经是目标文件名（原本就是序号命名），跳过
+                        if new_path == fp:
+                            continue
                         # 如果目标文件已存在，加上随机后缀避免冲突
                         if new_path.exists():
                             import random
@@ -547,7 +550,7 @@ class Zip2WebpApp:
     def _show_about(self):
         messagebox.showinfo(
             "关于 ZIP → WebP 批量转换",
-            "ZIP → WebP 批量转换工具  v1.0\n\n"
+            "ZIP → WebP 批量转换工具  v1.1\n\n"
             "将 ZIP 压缩包内的 JPG/PNG 图片自动转换为 WebP 格式，\n"
             "保留原始目录结构，打包到指定目录。\n\n"
             "核心引擎: Pillow | 多核并行: ProcessPoolExecutor\n"

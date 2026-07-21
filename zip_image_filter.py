@@ -66,7 +66,7 @@ def count_images_in_zip(zip_path: str) -> int:
 class ZipImageFilterApp:
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title("压缩包图片数量筛选工具")
+        self.root.title("压缩包图片数量筛选工具 v1.1")
         self.root.resizable(True, True)
 
         # DPI 缩放
